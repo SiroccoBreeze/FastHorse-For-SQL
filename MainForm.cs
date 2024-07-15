@@ -115,7 +115,7 @@ namespace FastHorse
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     DataRow row = dt.Rows[i];
-                    string sqlText = "SET QUOTED_IDENTIFIER OFF; " + SqlText(row[0].ToString());
+                    string sqlText = "SET QUOTED_IDENTIFIER OFF; \n GO \n " + SqlText(row[0].ToString());
 
                     // 使用异步操作执行查询
                     await Task.Run(() =>
