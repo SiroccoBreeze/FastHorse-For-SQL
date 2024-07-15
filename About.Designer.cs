@@ -38,22 +38,20 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AboutTextBox.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.AboutTextBox.Location = new System.Drawing.Point(7, 8);
-            this.AboutTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AboutTextBox.Location = new System.Drawing.Point(12, 13);
             this.AboutTextBox.Name = "AboutTextBox";
-            this.AboutTextBox.Size = new System.Drawing.Size(848, 469);
+            this.AboutTextBox.Size = new System.Drawing.Size(1419, 763);
             this.AboutTextBox.TabIndex = 0;
             this.AboutTextBox.Text = resources.GetString("AboutTextBox.Text");
             this.AboutTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // About
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 486);
+            this.ClientSize = new System.Drawing.Size(1445, 793);
             this.Controls.Add(this.AboutTextBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "About";
             this.Text = "关于";
             this.Load += new System.EventHandler(this.About_Load);
