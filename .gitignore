@@ -1,0 +1,24 @@
+# 忽略所有 bin 文件夹
+[Bb]in/
+
+# 忽略所有 obj 文件夹
+[Oo]bj/
+
+# 忽略用户特定文件（如 .suo、.user）
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 忽略生成的文件
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# 忽略 NuGet 包目录
+[Pp]ackages/
+
+# 忽略日志和临时文件
+*.log
+*.tmp
