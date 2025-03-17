@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         Title="SQL脚本执行器" Height="800" Width="1400"
         Background="#F5F5F5"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <local:StringLengthConverter x:Key="StringLengthConverter"/>
