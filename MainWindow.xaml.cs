@@ -23,6 +23,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
 using System.Xml;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Ude;
 
 namespace SqlScriptRunner;
 
@@ -469,26 +470,42 @@ public partial class MainWindow : Window
                     // 检查UTF-16 BE BOM
                     if (buffer[0] == 0xFE && buffer[1] == 0xFF)
                         return File.ReadAllText(filePath, Encoding.BigEndianUnicode);
+                    // 检查UTF-32 LE BOM
+                    if (buffer[0] == 0xFF && buffer[1] == 0xFE && buffer[2] == 0x00 && buffer[3] == 0x00)
+                        return File.ReadAllText(filePath, Encoding.UTF32);
                 }
             }
 
-            // 尝试直接使用GB2312编码（VSCode显示的编码）
-            try 
+            // 尝试使用Ude库进行编码检测
+            try
             {
-                var gb2312 = Encoding.GetEncoding("GB2312");
-                return File.ReadAllText(filePath, gb2312);
+                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    var detector = new CharsetDetector();
+                    detector.Feed(fs);
+                    detector.DataEnd();
+                    if (detector.Charset != null)
+                    {
+                        var encoding = Encoding.GetEncoding(detector.Charset);
+                        return File.ReadAllText(filePath, encoding);
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"GB2312编码读取失败: {ex.Message}");
+                Debug.WriteLine($"Ude编码检测失败: {ex.Message}");
             }
 
-            // 如果GB2312失败，尝试其他编码
+            // 尝试常用编码
             Encoding[] encodings = new Encoding[]
             {
-                Encoding.Default,        // 系统默认编码
                 Encoding.UTF8,           // UTF-8 (无BOM)
-                Encoding.GetEncoding("GBK")  // GBK
+                Encoding.GetEncoding("GB2312"),  // GB2312
+                Encoding.GetEncoding("GBK"),     // GBK
+                Encoding.GetEncoding("GB18030"), // GB18030
+                Encoding.GetEncoding("Big5"),    // Big5
+                Encoding.Default,        // 系统默认编码
+                Encoding.ASCII           // ASCII
             };
 
             foreach (var encoding in encodings)
@@ -496,6 +513,7 @@ public partial class MainWindow : Window
                 try
                 {
                     string content = File.ReadAllText(filePath, encoding);
+                    // 检查是否包含无效字符
                     if (!content.Contains('\uFFFD'))
                     {
                         Debug.WriteLine($"成功使用编码: {encoding.EncodingName}");
@@ -513,7 +531,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            throw new Exception($"读取文件 {Path.GetFileName(filePath)} 失败", ex);
+            throw new Exception($"读取文件 {Path.GetFileName(filePath)} 失败: {ex.Message}", ex);
         }
     }
 
